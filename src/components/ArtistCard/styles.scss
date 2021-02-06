@@ -1,0 +1,34 @@
+@import '../../styles/primaryColors.scss';
+
+.media-container{
+	// overflow: hidden;
+	$thumbSize: 60px;
+	border: 1px solid $themeSignature;
+	border-radius: 10px;
+	transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+
+	&:hover{
+		cursor: pointer;
+		background-color: $themeSignature;
+		color: black;
+		a{
+			color: black;
+		}
+	}
+
+	.media-body{
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.thumbImg{
+		height: $thumbSize;
+		width: $thumbSize;
+		border-radius: 50%;
+	}
+
+	a{
+		color: white;
+	}
+
+}

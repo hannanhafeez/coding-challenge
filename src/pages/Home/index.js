@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 
+//Components
+import ArtistCard from '../../components/ArtistCard'
+
 //Styling
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.scss'
@@ -15,7 +18,14 @@ const Home = props => {
 	])
 
 	const [results, setResulsts] = useState([
-		{id:'12345', name: 'Hannan', url: '', imageUrl:''}
+		{id:'12345', name: 'Hannan', thumb_url: 'https://photos.bandsintown.com/thumb/8479721.jpeg', facebook_page_url:'http://www.facebook.com/5330548481'},
+		{id:'12346', name: 'Zain', thumb_url: 'https://photos.bandsintown.com/thumb/8479721.jpeg', facebook_page_url:'http://www.facebook.com/5330548481'},
+		{id:'12347', name: 'Saqib', thumb_url: 'https://photos.bandsintown.com/thumb/8479721.jpeg', facebook_page_url:'http://www.facebook.com/5330548481'},
+		{id:'12348', name: 'Kamran', thumb_url: 'https://photos.bandsintown.com/thumb/8479721.jpeg', facebook_page_url:'http://www.facebook.com/5330548481'},
+		{id:'12349', name: 'Hannan', thumb_url: 'https://photos.bandsintown.com/thumb/8479721.jpeg', facebook_page_url:'http://www.facebook.com/5330548481'},
+		{id:'12351', name: 'Zain', thumb_url: 'https://photos.bandsintown.com/thumb/8479721.jpeg', facebook_page_url:'http://www.facebook.com/5330548481'},
+		{id:'12352', name: 'Saqib', thumb_url: 'https://photos.bandsintown.com/thumb/8479721.jpeg', facebook_page_url:'http://www.facebook.com/5330548481'},
+		{id:'12353', name: 'Kamran', thumb_url: 'https://photos.bandsintown.com/thumb/8479721.jpeg', facebook_page_url:'http://www.facebook.com/5330548481'}
 	])
 
 	return (
@@ -26,7 +36,7 @@ const Home = props => {
 				
 				<div className={'row justify-content-center'}>
 					
-					<div class="input-group col-10 col-sm-8 col-md-8 col-lg-5">
+					<div class="input-group input-group-lg col-10 col-sm-8 col-md-8 col-lg-5">
 						
 						<input type="text" className={'form-control search-input'}
 							placeholder="Search Artist"
@@ -49,7 +59,18 @@ const Home = props => {
 			</div>
 
 			<div className='container-fluid'>
-
+				{
+					results.length > 0 && <p className="mb-3 text-center"><b>{results.length}</b> results found for "{}"</p>
+				}
+				<div className='row'>
+					{
+						results.map((artist, index) => {
+							return (
+								<ArtistCard {...{artist, index}}/>
+							)
+						})
+					}
+				</div>
 			</div>
 
 		</div>

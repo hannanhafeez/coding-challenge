@@ -1,0 +1,59 @@
+@import '../../styles/primaryColors.scss';
+
+.page-bg{
+	background-color: $themeDark;
+	min-height: 100vh;
+	color: $themeSignature;
+	
+	.back-Btn-container{
+		display: flex;
+		cursor: pointer;
+		path{
+			width: 20px;
+			height: 20px;
+			fill: $themeSignature;
+		}
+	}
+}
+
+.search-input{
+	background-color: transparent;
+	color: $themeSignature;
+	transition: all 0.5s;
+	
+	&::placeholder{
+		color: white;
+		opacity: 0.8;
+	}
+
+	&:focus{
+		color: $themeSignature;
+		font-weight: 600;
+		background-color: transparent;
+		border-color: $themeSignature;
+		box-shadow:  none;
+	}
+}
+
+$searchSize: 25px;
+.btn-search{
+	padding: 5px 10px; 
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	background-color: transparent;
+	border-color: white;
+
+	svg{
+		width: $searchSize;
+		height: $searchSize;
+		fill: white;
+	}
+
+	&:hover{
+		border-color: $themeSignature;
+		background-color: $themeSignature;
+		svg{
+			fill: black;
+		}
+	}
+}

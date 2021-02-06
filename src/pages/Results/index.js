@@ -1,17 +1,20 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 
 //Components
 import ArtistCard from '../../components/ArtistCard'
 import DetailCard from '../../components/DetailCard'
 
-//Styling
+//Styles
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.scss'
 
 //Assets
-import {ReactComponent as Search} from '../../assets/svg/search.svg'
 import {ReactComponent as BackArrow} from '../../assets/svg/back-arrow.svg'
+import {ReactComponent as Loading} from '../../assets/svg/loading.svg'
+
+// Services
+import { fetchArtistEvents } from "../../services/Results.services";
 
 const dummyData = [
 	{
@@ -96,39 +99,81 @@ const dummyData = [
 	}, 
 ]
 
-const Results = props => {
+const Results = ({}) => {
 
-	const artist = {id:'12345', name: 'Hannan', thumb_url: 'https://photos.bandsintown.com/thumb/8479721.jpeg', facebook_page_url:'http://www.facebook.com/5330548481'}
+	// State objects
+	const artist = {
+		thumb_url: "https://photos.bandsintown.com/thumb/8479721.jpeg",
+		mbid: "0ab49580-c84f-44d4-875f-d83760ea2cfe",
+		support_url: "",
+		facebook_page_url: "http://www.facebook.com/5330548481",
+		image_url: "https://photos.bandsintown.com/large/8479721.jpeg",
+		name: "Maroon 5",
+		options: {
+			display_listen_unit: false
+		},
+		id: "510",
+		tracker_count: 5810578,
+		upcoming_event_count: 40,
+		url: "https://www.bandsintown.com/a/510?came_from=267&app_id=anything"
+	}
+	const [isFetching, setFetching] = useState(false)
+	const [results, setResults] = useState([])
 
-	const [results, setResulsts] = useState(dummyData)
+	useEffect(() => {
+		
+		setFetching(true)
+		fetchArtistEvents(artist.name)
+			.then(res => res.json())
+			.then(response=>{
+				console.log(response);
+				setResults(response)
+			})
+			.catch(error=>{
+				console.log(error);
+				alert('An unknown error occured while fetching data. Please try again later!')
+			})
+			.finally(()=>setFetching(false))
+
+		return () => {}
+	}, [])
+
 
 	return (
 		<div className='page-bg'>
 
 			{/* Top Searchbar container*/}
-			<div className='container-fluid pt-3'>
+			<div className='container pt-3 pb-1 sticky-top'>
 				<div className={'container back-Btn-container'}>
 					<BackArrow />
 					<p className={"ml-2 mb-0"}>Back to results</p>
 				</div>
-				<div className={'row justify-content-center pt-3 pb-3 pt-sm-5 pb-sm-5'}>
+				<div className={'row justify-content-center pt-3 pb-3 pt-sm-4 pb-sm-4'}>
 				
 					<ArtistCard {...{artist}}/>
 					
 				</div>
+				{
+					results.length > 0 && <p className="text-center"><b>{results.length}</b> upcoming events</p>
+				}
 			</div>
 
 			<div className='container'>
-				{
-					results.length > 0 && <p className="mb-3 text-center"><b>{results.length}</b> upcoming events</p>
-				}
-				<div className='row'>
+				<div className={'row' + (isFetching ? "justify-content-center" : '') }>
 					{
-						results.map((event, index) => {
-							return (
-								<DetailCard {...{event, index}}/>
-							)
-						})
+						isFetching 
+						?
+							// Show loading
+							<div className='mt-5'>
+								{<Loading/>}
+							</div>
+						:
+						 	// Show results
+							results.map((event, index) => {
+								return (
+									<DetailCard {...{event, index}}/>
+								)
+							})
 					}
 				</div>
 			</div>

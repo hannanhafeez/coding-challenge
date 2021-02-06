@@ -1,8 +1,9 @@
 @import '../../styles/primaryColors.scss';
 
 .media-container{
-	// overflow: hidden;
-	$thumbSize: 60px;
+
+	$thumbSize: 100px;
+	height: 130px;
 	border: 1px solid $themeSignature;
 	border-radius: 10px;
 	transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);

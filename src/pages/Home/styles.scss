@@ -39,7 +39,7 @@ $searchSize: 25px;
 		fill: white;
 	}
 
-	&:hover{
+	&:hover, &:focus{
 		border-color: $themeSignature;
 		background-color: $themeSignature;
 		svg{

@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
+import {useSavedEvents} from '../../hooks/useStorage'
+
+//React Router
+import {
+  Link,
+  useHistory, useLocation
+} from "react-router-dom";
 
 //Components
 import ArtistCard from '../../components/ArtistCard'
@@ -101,64 +108,71 @@ const dummyData = [
 
 const Results = ({}) => {
 
+	//Hooks
+	const history = useHistory()
+	const {state: routerState} = useLocation()
+	const [events, setEvents] = useSavedEvents()
+	
 	// State objects
-	const artist = {
-		thumb_url: "https://photos.bandsintown.com/thumb/8479721.jpeg",
-		mbid: "0ab49580-c84f-44d4-875f-d83760ea2cfe",
-		support_url: "",
-		facebook_page_url: "http://www.facebook.com/5330548481",
-		image_url: "https://photos.bandsintown.com/large/8479721.jpeg",
-		name: "Maroon 5",
-		options: {
-			display_listen_unit: false
-		},
-		id: "510",
-		tracker_count: 5810578,
-		upcoming_event_count: 40,
-		url: "https://www.bandsintown.com/a/510?came_from=267&app_id=anything"
-	}
+	const artist = routerState?.artist
 	const [isFetching, setFetching] = useState(false)
 	const [results, setResults] = useState([])
 
 	useEffect(() => {
 		
+		if(!artist || artist?.upcoming_event_count === 0) {
+			// setEvents([])
+			return
+		}
+		if (artist.id === events?.artist_id) return
 		setFetching(true)
-		fetchArtistEvents(artist.name)
+		fetchArtistEvents(artist?.name)
 			.then(res => res.json())
 			.then(response=>{
 				console.log(response);
-				setResults(response)
+				setEvents(artist.id, response)
 			})
 			.catch(error=>{
 				console.log(error);
 				alert('An unknown error occured while fetching data. Please try again later!')
 			})
 			.finally(()=>setFetching(false))
+		// setFetching(false)
+		// !events && setFetching(false)
 
 		return () => {}
 	}, [])
 
+	const getArtists = () =>{
+		
+	}
+
+	const onBackPressed = () => {
+		history.length < 2 
+			?	history.replace('/home')
+			:	history.goBack()
+	}
 
 	return (
 		<div className='page-bg'>
 
 			{/* Top Searchbar container*/}
-			<div className='container pt-3 pb-1 sticky-top'>
-				<div className={'container back-Btn-container'}>
+			<div className='container pt-3 sticky-top'>
+				<div className={'container back-Btn-container'}
+					onClick={onBackPressed}
+				>
 					<BackArrow />
 					<p className={"ml-2 mb-0"}>Back to results</p>
 				</div>
 				<div className={'row justify-content-center pt-3 pb-3 pt-sm-4 pb-sm-4'}>
 				
-					<ArtistCard {...{artist}}/>
+					{artist && <ArtistCard {...{artist}}/>}
 					
 				</div>
-				{
-					results.length > 0 && <p className="text-center"><b>{results.length}</b> upcoming events</p>
-				}
+				
 			</div>
 
-			<div className='container'>
+			<div className='container pt-2'>
 				<div className={'row' + (isFetching ? "justify-content-center" : '') }>
 					{
 						isFetching 
@@ -168,10 +182,14 @@ const Results = ({}) => {
 								{<Loading/>}
 							</div>
 						:
-						 	// Show results
-							results.map((event, index) => {
+						 	// Show results if not loading and if events match with the selected artist
+							// Otherwise API will be called when page loads
+							(artist?.id === events?.artist_id) && events?.list?.map((event, index) => {
 								return (
-									<DetailCard {...{event, index}}/>
+									<DetailCard 
+										key={`${index}-${event.id}`}
+										{...{event, index}}
+									/>
 								)
 							})
 					}

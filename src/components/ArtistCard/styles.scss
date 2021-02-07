@@ -7,20 +7,38 @@
 	border: 1px solid $themeSignature;
 	border-radius: 10px;
 	transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-
+	color: $themeSignature;
+	position: relative;
+	
 	&:hover{
-		cursor: pointer;
 		background-color: $themeSignature;
 		color: black;
-		a{
+		text-decoration: none;
+		a {
 			color: black;
 		}
+		.link > svg{
+			fill: black;
+		}
+		.media-body{
+			p:last-child {
+				color: black;
+			}
+		}
 	}
+
 
 	.media-body{
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+
+		p:last-child{
+			color: white; display: inline;
+			&:hover{
+				text-decoration: underline;
+			}
+		}
 	}
 	.thumbImg{
 		height: $thumbSize;
@@ -32,4 +50,13 @@
 		color: white;
 	}
 
+	.link {
+		$arrow-size: 30px;
+		// border-right: 1px solid rgb(21, 21, 21);
+		svg{
+			height: $arrow-size;
+			width: $arrow-size;
+			fill: $themeSignature;
+		}
+	}
 }

@@ -1,5 +1,4 @@
-import React, {useState} from 'react'
-import PropTypes from 'prop-types'
+import React, {} from 'react'
 
 //Styling
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,6 +18,11 @@ function DetailCard({event, index}) {
 
 				<div className="card-body container-fluid">
 					<div className="row">
+						<div className="col-12 mt-3 text-center">
+							<h5 className="card-title"><strong>Lineup</strong></h5>
+							<h5 className="card-text text-white">{event?.lineup.join(', ')}</h5>
+						</div>
+						<hr/>
 						<div className="col-6 mt-3">
 							<h5 className="card-title"><strong>Country</strong></h5>
 							<h5 className="card-text text-muted">{event?.venue?.country}</h5>
@@ -38,6 +42,7 @@ function DetailCard({event, index}) {
 							<h5 className="card-title"><strong>City</strong></h5>
 							<h5 className="card-text text-muted">{dateTime.toDateString()}</h5>
 						</div>
+						
 					</div>
 				</div>
 			</div>

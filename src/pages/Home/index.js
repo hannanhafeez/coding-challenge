@@ -1,5 +1,7 @@
 import React, {useState, useRef} from 'react'
 import PropTypes from 'prop-types'
+import {useSavedArtistNames, useSavedArtist} from '../../hooks/useStorage'
+
 
 //Components
 import ArtistCard from '../../components/ArtistCard'
@@ -30,8 +32,9 @@ const Home = ({}) => {
 
 	//State objects
 	const [isFetching, setFetching] = useState(false)
-	const [artistList, setArtistList] = useState([])
-	const [results, setResults] = useState([])
+	const [artist, saveArtist] = useSavedArtist()
+	const [names, saveName] = useSavedArtistNames()
+	const results = artist ? [artist] : []
 
 	//Refs
 	const inputRef = useRef(null)
@@ -44,13 +47,13 @@ const Home = ({}) => {
 			alert('Please enter a name first!')
 			return
 		}
-		
+		saveName(name)
 		setFetching(true)
 		fetchArtists(name)
 			.then(res => res.json())
 			.then(response=>{
 				console.log(response);
-				setResults([response])
+				saveArtist(response)
 			})
 			.catch(error=>{
 				console.log(error);
@@ -77,7 +80,7 @@ const Home = ({}) => {
 						/>
 						<datalist id="artists">
 							{
-								artistList.map(
+								names.map(
 									(artist, index) => (<option key={`artist-${index}`} value={artist}/>)
 								)
 							}
@@ -93,7 +96,7 @@ const Home = ({}) => {
 			{/* Results container */}
 			<div className='container'>
 				{
-					results.length > 0 && <p className="mb-3 text-center"><b>{results.length}</b> results found for "{inputRef.current?.value}"</p>
+					results.length > 0 && <p className="mb-3 text-center"><b>{results.length}</b> results found for "{artist?.name}"</p>
 				}
 				<div className='row justify-content-center'>
 					{
@@ -106,7 +109,7 @@ const Home = ({}) => {
 						:
 						 	// Show results
 							results.map((artist, index) => (
-								<ArtistCard 
+								<ArtistCard clickable={true}
 									key={`${index}-${artist.id}`} 
 									{...{artist, index}}
 								/>

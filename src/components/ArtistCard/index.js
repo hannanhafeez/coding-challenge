@@ -23,7 +23,7 @@ String.prototype.trimLeft = function(charlist) {
 
 function ArtistCard({artist, index, clickable }) {
 	return (
-		<div className="col-12 col-sm-12 col-md-6 mb-3">	
+		<div className="col-12 col-sm-12 col-md-7 col-lg-6 mb-3">	
 			
 			<Link className={'media p-3 media-container'}
 				to={{pathname:"/events", state:{artist: artist}}} 

@@ -67,7 +67,7 @@ const Home = ({}) => {
 		<div className='page-bg'>
 
 			{/* Top Searchbar container*/}
-			<div className='container pt-3 pb-3 pt-sm-5 pb-sm-5'>
+			<div className='container pt-5 pb-5'>
 				
 				<div className={'row justify-content-center'}>
 					

@@ -116,7 +116,8 @@ const Results = ({}) => {
 	// State objects
 	const artist = routerState?.artist
 	const [isFetching, setFetching] = useState(false)
-	const [results, setResults] = useState([])
+
+	const isDataUpdated = artist?.id === events?.artist_id
 
 	useEffect(() => {
 		
@@ -124,7 +125,7 @@ const Results = ({}) => {
 			// setEvents([])
 			return
 		}
-		if (artist.id === events?.artist_id) return
+		if (isDataUpdated) return
 		setFetching(true)
 		fetchArtistEvents(artist?.name)
 			.then(res => res.json())
@@ -148,7 +149,7 @@ const Results = ({}) => {
 	}
 
 	const onBackPressed = () => {
-		history.length < 2 
+		!artist 
 			?	history.replace('/home')
 			:	history.goBack()
 	}
@@ -184,7 +185,7 @@ const Results = ({}) => {
 						:
 						 	// Show results if not loading and if events match with the selected artist
 							// Otherwise API will be called when page loads
-							(artist?.id === events?.artist_id) && events?.list?.map((event, index) => {
+							isDataUpdated && events?.list?.map((event, index) => {
 								return (
 									<DetailCard 
 										key={`${index}-${event.id}`}

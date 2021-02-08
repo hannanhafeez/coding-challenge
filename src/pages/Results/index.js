@@ -121,12 +121,13 @@ const Results = ({}) => {
 
 	useEffect(() => {
 		
-		if(!artist || artist?.upcoming_event_count === 0) {
-			// setEvents([])
-			return
-		}
+		// If randomly visited events link or upcoming events are 0, request should not be made
+		if(!artist || artist?.upcoming_event_count === 0) return
+
+		// If data is already fetched and updated, dont make request
 		if (isDataUpdated) return
-		setFetching(true)
+
+		setFetching(true)	//Setting fetching status to true
 		fetchArtistEvents(artist?.name)
 			.then(res => res.json())
 			.then(response=>{
@@ -137,21 +138,15 @@ const Results = ({}) => {
 				console.log(error);
 				alert('An unknown error occured while fetching data. Please try again later!')
 			})
-			.finally(()=>setFetching(false))
-		// setFetching(false)
-		// !events && setFetching(false)
+			.finally(()=>setFetching(false))	//Setting fetching status to false
 
-		return () => {}
 	}, [])
 
-	const getArtists = () =>{
-		
-	}
 
 	const onBackPressed = () => {
 		!artist 
-			?	history.replace('/home')
-			:	history.goBack()
+			?	history.replace('/home') // If visited events link randomly, go back to home/search
+			:	history.goBack() //simply go back to previous page (which must be home/search)
 	}
 
 	return (
@@ -173,6 +168,7 @@ const Results = ({}) => {
 				
 			</div>
 
+			{/* Results container*/}
 			<div className='container pt-2'>
 				<div className={'row' + (isFetching ? "justify-content-center" : '') }>
 					{

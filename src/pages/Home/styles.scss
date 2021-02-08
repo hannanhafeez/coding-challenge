@@ -22,6 +22,14 @@
 		background-color: transparent;
 		border-color: $themeSignature;
 		box-shadow:  none;
+		~ .btn-search{
+			border-color: $themeSignature;
+			background-color: $themeSignature;
+
+			svg {
+				fill: black;
+			}
+		}
 	}
 }
 

@@ -40,15 +40,16 @@ const Home = ({}) => {
 	const inputRef = useRef(null)
 
 	// Events
-	const onSearchPressed = () => {
+	const onSearchPressed = (e) => {
+		e.preventDefault()
 		
 		const name = inputRef.current.value.trim()
-		if (name === ''){
+		if (name === ''){	//Prompt and return if name is empty. 
 			alert('Please enter a name first!')
 			return
 		}
 		saveName(name)
-		setFetching(true)
+		setFetching(true) 	//Setting fetching status to true
 		fetchArtists(name)
 			.then(res => res.json())
 			.then(response=>{
@@ -59,7 +60,7 @@ const Home = ({}) => {
 				console.log(error);
 				alert('An unknown error occured while fetching data. Please try again later!')
 			})
-			.finally(()=>setFetching(false))
+			.finally(()=>setFetching(false))	//Setting fetching status to on request completion
 		
 	}
 
@@ -71,13 +72,17 @@ const Home = ({}) => {
 				
 				<div className={'row justify-content-center'}>
 					
-					<div className="input-group input-group-lg col-12 col-md-8 col-lg-5">
-						
+					<form className="col-12 col-md-8 col-lg-5" onSubmit={onSearchPressed}>
+						<div className="input-group input-group-lg">
+
 						<input ref={inputRef} type="text" className={'form-control search-input'}
 							placeholder="Search Artist"
 							name="artists"
 							list="artists"
 						/>
+						<button className="btn btn-search" type="submit" onClick={onSearchPressed}>
+							<Search/>
+						</button>
 						<datalist id="artists">
 							{
 								names.map(
@@ -86,10 +91,8 @@ const Home = ({}) => {
 							}
 						</datalist>
 
-						<button className="btn btn-search" type="button" id="button-addon2" onClick={onSearchPressed}>
-							<Search/>
-						</button>
-					</div>
+						</div>
+					</form>
 				</div>
 			</div>
 

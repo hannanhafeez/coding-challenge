@@ -1,6 +1,6 @@
 import { BASE_URL } from "./ServiceURLs";
 
-const app_id = 'anything'
+export const app_id = 'anything'
 
 export const fetchArtistEvents = (artistName) => {
 	const requestOptions = {
